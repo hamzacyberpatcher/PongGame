@@ -6,6 +6,8 @@ using namespace std;
 const int WIDTH = 1600;
 const int HEIGHT = 900;
 
+// all of the enums
+
 enum GAME_STATE
 {
 	MENU,
@@ -33,6 +35,8 @@ enum PLAY_STATE
 	TOWARD_PLAYER_ONE,
 	TOWARD_PLAYER_TWO
 };
+
+// all of the utility classes
 
 class RectangleShape
 {
