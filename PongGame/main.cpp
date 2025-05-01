@@ -6,6 +6,34 @@ using namespace std;
 const int WIDTH = 1600;
 const int HEIGHT = 900;
 
+enum GAME_STATE
+{
+	MENU,
+	IN_GAME
+};
+
+
+enum BUTTON_STATE
+{
+	UP,
+	DOWN,
+	HOVER
+};
+
+enum MOUSE_STATE
+{
+	UP,
+	DOWN
+};
+
+enum PLAY_STATE
+{
+	SERVE_PLAYER_ONE,
+	SERVE_PLAYER_TWO,
+	TOWARD_PLAYER_ONE,
+	TOWARD_PLAYER_TWO
+};
+
 class RectangleShape
 {
 public:
