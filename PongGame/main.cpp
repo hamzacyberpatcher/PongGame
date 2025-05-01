@@ -6,6 +6,24 @@ using namespace std;
 const int WIDTH = 1600;
 const int HEIGHT = 900;
 
+class RectangleShape
+{
+public:
+	float x;
+	float y;
+	float width;
+	float height;
+	RectangleShape(float x = 0, float y = 0, float width = 0, float height = 0) : x(x), y(y), width(width), height(height) {}
+};
+
+class Vector2d
+{
+public:
+	float x;
+	float y;
+	Vector2d(float x = 0, float y = 0) : x(x), y(y) {}
+};
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Comway's Game of Life", sf::Style::Default);
