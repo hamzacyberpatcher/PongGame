@@ -24,6 +24,8 @@ enum PlayerWon
 {
     PLAYER_1,
     PLAYER_2,
+    HUMAN,
+    AI,
     NONE
 };
 
@@ -436,7 +438,7 @@ public:
         // Game over
         if (scorePlayer == 10 || scoreAi == 10) {
             winState = GAME_OVER;
-            player = (scorePlayer == 10) ? PLAYER_1 : PLAYER_2;
+            player = (scorePlayer == 10) ? HUMAN : AI;
         }
     }
 
@@ -606,6 +608,10 @@ public:
             playerText.setString("PLAYER 1 HAS WON!!!!");
         else if (player == PLAYER_2)
             playerText.setString("PLAYER 2 HAS WON!!!!");
+        else if (player == HUMAN)
+            playerText.setString("HUMAN HAS WON!!!!!!");
+        else if (player == AI)
+            playerText.setString("AI HAS WON!!!!!!!!!!");
 
         window.draw(enterKey);
         window.draw(playerText);
