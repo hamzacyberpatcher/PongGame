@@ -8,6 +8,8 @@ const int HEIGHT = 900;
 const float PADDLE_SPEED = 400;
 const float BALL_SPEED = 500;
 
+sf::Font font;
+
 // Utility structs
 struct Vector2d {
     float x, y;
@@ -72,12 +74,14 @@ class PongGame {
     Paddle m_p1;
     Paddle m_p2;
     sf::Clock clock;
+    int scoreP1;
+    int scoreP2;
 
 public:
     PongGame()
         : m_ball(Vector2d(WIDTH / 2, HEIGHT / 2), 15),
         m_p1(RectangleShape(50, HEIGHT / 2 - 50, 15, 100)),
-        m_p2(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)) {
+        m_p2(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)), scoreP1(0), scoreP2(0) {
     }
 
     void update() {
@@ -105,16 +109,29 @@ public:
         if (b.x - m_ball.getRadius() < r1.x + r1.width &&
             b.x + m_ball.getRadius() > r1.x &&
             b.y > r1.y && b.y < r1.y + r1.height)
+        {
+
             m_ball.setVelocity(Vector2d(std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+        }
 
         if (b.x + m_ball.getRadius() > r2.x &&
             b.x - m_ball.getRadius() < r2.x + r2.width &&
             b.y > r2.y && b.y < r2.y + r2.height)
+        {
             m_ball.setVelocity(Vector2d(-std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+        }
 
         // Reset ball if out of bounds
-        if (b.x < 0 || b.x > WIDTH)
+        if (b.x < 0) {
+            scoreP2++;
             m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+            m_ball.setVelocity(Vector2d(BALL_SPEED, BALL_SPEED));
+        }
+        if (b.x > WIDTH) {
+            scoreP1++;
+            m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+            m_ball.setVelocity(Vector2d(-BALL_SPEED, BALL_SPEED));
+        }
     }
 
     void render(sf::RenderWindow& window) {
@@ -130,6 +147,21 @@ public:
         drawRect(m_p1.getRect());
         drawRect(m_p2.getRect());
 
+        
+
+        sf::Text text;
+        text.setFont(font);
+        text.setString("PLAYER 1: " + to_string(scoreP1));
+        text.setPosition(50, 10);
+
+        window.draw(text);
+
+        text.setString("PLAYER 2: " + to_string(scoreP2));
+        text.setPosition(WIDTH - 200, 10);
+
+        window.draw(text);
+        
+
         // Draw ball
         sf::CircleShape ballShape;
         ballShape.setRadius(m_ball.getRadius());
@@ -144,7 +176,7 @@ public:
 int main() {
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pong Game");
     window.setFramerateLimit(60);
-
+    font.loadFromFile("./fonts/font.ttf");
     PongGame game;
 
     while (window.isOpen()) {
