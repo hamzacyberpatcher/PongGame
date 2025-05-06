@@ -10,6 +10,22 @@ const float BALL_SPEED = 500;
 
 sf::Font font;
 
+enum WINDOW_STATE
+{
+    PLAY_GAME_PLAYERS,
+    GAME_OVER
+};
+
+enum PlayerWon
+{
+    PLAYER_1,
+    PLAYER_2,
+    NONE
+};
+
+WINDOW_STATE winState = PLAY_GAME_PLAYERS;
+PlayerWon player;
+
 // Utility structs
 struct Vector2d {
     float x, y;
@@ -68,8 +84,15 @@ public:
     }
 };
 
+class GameWindow
+{
+public:
+    virtual void update() = 0;
+    virtual void render(sf::RenderWindow& window) = 0;
+};
+
 // Game class
-class PongGame {
+class PongGame : public GameWindow {
     Ball m_ball;
     Paddle m_p1;
     Paddle m_p2;
@@ -132,6 +155,15 @@ public:
             m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
             m_ball.setVelocity(Vector2d(-BALL_SPEED, BALL_SPEED));
         }
+
+        if (scoreP1 == 10 || scoreP2 == 10)
+        {
+            winState = GAME_OVER;
+            if (scoreP1 == 10)
+                player = PLAYER_1;
+            else
+                player = PLAYER_2;
+        }
     }
 
     void render(sf::RenderWindow& window) {
@@ -172,12 +204,63 @@ public:
     }
 };
 
+class GameOverWindow : public GameWindow
+{
+public:
+    void update()
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            winState = PLAY_GAME_PLAYERS;
+            player = NONE;
+        }
+    }
+    void render(sf::RenderWindow& window)
+    {
+        sf::Text gameOverText;
+        gameOverText.setFont(font);
+        gameOverText.setString("GAMEOVER!!!");
+        gameOverText.setPosition(100, 100);
+
+        sf::Text playerText;
+        playerText.setFont(font);
+        playerText.setPosition(100, 200);
+
+        sf::Text enterKey;
+        enterKey.setFont(font);
+        enterKey.setString("PRESS ENTER TO CONTINUE");
+        enterKey.setPosition(100, 300);
+
+        if (player == PLAYER_1)
+            playerText.setString("PLAYER 1 HAS WON!!!!");
+        else if (player == PLAYER_2)
+            playerText.setString("PLAYER 2 HAS WON!!!!");
+
+        window.draw(enterKey);
+        window.draw(playerText);
+        window.draw(gameOverText);
+    }
+};
+
+void setGameWindow(GameWindow* &game)
+{
+    if (game)
+        delete game;
+
+    if (winState == PLAY_GAME_PLAYERS)
+        game = new PongGame();
+    else if (winState == GAME_OVER)
+        game = new GameOverWindow();
+}
+
 // Main loop
 int main() {
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pong Game");
     window.setFramerateLimit(60);
     font.loadFromFile("./fonts/font.ttf");
-    PongGame game;
+    GameWindow* game = nullptr;
+    setGameWindow(game);
+    WINDOW_STATE currState = winState;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -185,12 +268,21 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
 
-        game.update();
+        
+        game->update();
+
+        if (currState != winState)
+        {
+            setGameWindow(game);
+            currState = winState;
+        }
 
         window.clear(sf::Color::Black);
-        game.render(window);
+        game->render(window);
         window.display();
     }
+
+    delete game;
 
     return 0;
 }
