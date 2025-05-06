@@ -7,13 +7,16 @@ const int WIDTH = 1600;
 const int HEIGHT = 900;
 const float PADDLE_SPEED = 400;
 const float BALL_SPEED = 500;
+const int FPS = 10;
 
 sf::Font font;
 
 enum WINDOW_STATE
 {
     MAIN_GAME,
+    MODE_SELECT,
     PLAY_GAME_PLAYERS,
+    PLAY_GAME_AI,
     GAME_OVER
 };
 
@@ -169,6 +172,8 @@ public:
     }
 
     void render(sf::RenderWindow& window) {
+        window.setFramerateLimit(0);
+
         // Draw paddles
         auto drawRect = [&](RectangleShape r) {
             sf::RectangleShape shape;
@@ -206,12 +211,283 @@ public:
     }
 };
 
+//class PongGameAi : public GameWindow {
+//    Ball m_ball;
+//    Paddle m_player;
+//    Paddle m_ai;
+//    sf::Clock clock;
+//    int scorePlayer;
+//    int scoreAi;
+//
+//public:
+//    PongGameAi()
+//        : m_ball(Vector2d(WIDTH / 2, HEIGHT / 2), 15),
+//        m_player(RectangleShape(50, HEIGHT / 2 - 50, 15, 100)),
+//        m_ai(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)),
+//        scorePlayer(0), scoreAi(0) {
+//    }
+//
+//    void update() override {
+//        float dt = clock.restart().asSeconds();
+//
+//        // Player input
+//        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+//            m_player.moveY(-PADDLE_SPEED * dt);
+//        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+//            m_player.moveY(PADDLE_SPEED * dt);
+//
+//        // --- Smart AI logic ---
+//        RectangleShape aiRect = m_ai.getRect();
+//        Vector2d ballPos = m_ball.getPosition();
+//        Vector2d ballVel = m_ball.getVelocity();
+//
+//        // Only move when the ball is approaching the AI
+//        if (ballVel.x > 0) {
+//            // Predict where the ball will intersect with AI's X
+//            float timeToReachAI = (aiRect.x - ballPos.x) / ballVel.x;
+//            float predictedY = ballPos.y + ballVel.y * timeToReachAI;
+//
+//            // Clamp predicted Y to screen
+//            predictedY = std::max(0.f, std::min((float)HEIGHT, predictedY));
+//
+//            float aiCenter = aiRect.y + aiRect.height / 2;
+//
+//            if (predictedY < aiCenter - 10)
+//                m_ai.moveY(-PADDLE_SPEED * dt);
+//            else if (predictedY > aiCenter + 10)
+//                m_ai.moveY(PADDLE_SPEED * dt);
+//        }
+//
+//        // Ball update
+//        m_ball.update(dt);
+//
+//        // Collision detection
+//        RectangleShape r1 = m_player.getRect();
+//        RectangleShape r2 = m_ai.getRect();
+//        Vector2d b = m_ball.getPosition();
+//
+//        // Player collision
+//        if (b.x - m_ball.getRadius() < r1.x + r1.width &&
+//            b.x + m_ball.getRadius() > r1.x &&
+//            b.y > r1.y && b.y < r1.y + r1.height) {
+//            m_ball.setVelocity(Vector2d(std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+//        }
+//
+//        // AI collision
+//        if (b.x + m_ball.getRadius() > r2.x &&
+//            b.x - m_ball.getRadius() < r2.x + r2.width &&
+//            b.y > r2.y && b.y < r2.y + r2.height) {
+//            m_ball.setVelocity(Vector2d(-std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+//        }
+//
+//        // Scoring
+//        if (b.x < 0) {
+//            scoreAi++;
+//            m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+//            m_ball.setVelocity(Vector2d(BALL_SPEED, BALL_SPEED));
+//        }
+//        if (b.x > WIDTH) {
+//            scorePlayer++;
+//            m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+//            m_ball.setVelocity(Vector2d(-BALL_SPEED, BALL_SPEED));
+//        }
+//
+//        // Game over check
+//        if (scorePlayer == 10 || scoreAi == 10) {
+//            winState = GAME_OVER;
+//            player = (scorePlayer == 10) ? PLAYER_1 : PLAYER_2;
+//        }
+//    }
+//
+//    void render(sf::RenderWindow& window) override {
+//        auto drawRect = [&](RectangleShape r) {
+//            sf::RectangleShape shape;
+//            shape.setSize(sf::Vector2f(r.width, r.height));
+//            shape.setPosition(r.x, r.y);
+//            shape.setFillColor(sf::Color::White);
+//            window.draw(shape);
+//            };
+//
+//        drawRect(m_player.getRect());
+//        drawRect(m_ai.getRect());
+//
+//        sf::Text text;
+//        text.setFont(font);
+//        text.setString("YOU: " + to_string(scorePlayer));
+//        text.setPosition(50, 10);
+//        window.draw(text);
+//
+//        text.setString("AI: " + to_string(scoreAi));
+//        text.setPosition(WIDTH - 150, 10);
+//        window.draw(text);
+//
+//        sf::CircleShape ballShape;
+//        ballShape.setRadius(m_ball.getRadius());
+//        ballShape.setOrigin(m_ball.getRadius(), m_ball.getRadius());
+//        ballShape.setPosition(m_ball.getPosition().x, m_ball.getPosition().y);
+//        ballShape.setFillColor(sf::Color::White);
+//        window.draw(ballShape);
+//    }
+//};
+
+
+class PongGameAi : public GameWindow {
+    Ball m_ball;
+    Paddle m_player;
+    Paddle m_ai;
+    sf::Clock clock;
+    float aiVelocity = 0.0f;
+    float aiReactionTimer = 0.0f;
+    const float AI_MAX_SPEED = PADDLE_SPEED;
+    const float AI_ACCEL = 800.0f;
+    const float AI_REACTION_DELAY = 0.08f; // 80 ms reaction delay
+
+    int scorePlayer;
+    int scoreAi;
+
+public:
+    PongGameAi()
+        : m_ball(Vector2d(WIDTH / 2, HEIGHT / 2), 15),
+        m_player(RectangleShape(50, HEIGHT / 2 - 50, 15, 100)),
+        m_ai(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)),
+        scorePlayer(0), scoreAi(0) {
+    }
+
+    float simulateWallBounces(Vector2d pos, Vector2d vel, float targetX) {
+        float time = (targetX - pos.x) / vel.x;
+        float predictedY = pos.y + vel.y * time;
+
+        // Reflect vertically if it goes out of bounds (simulate bounce)
+        while (predictedY < 0 || predictedY > HEIGHT) {
+            if (predictedY < 0)
+                predictedY = -predictedY;
+            else if (predictedY > HEIGHT)
+                predictedY = 2 * HEIGHT - predictedY;
+        }
+
+        return predictedY;
+    }
+
+    void update() override {
+        float dt = clock.restart().asSeconds();
+        aiReactionTimer += dt;
+
+        // Player movement
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            m_player.moveY(-PADDLE_SPEED * dt);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            m_player.moveY(PADDLE_SPEED * dt);
+
+        // Smart AI movement
+        RectangleShape aiRect = m_ai.getRect();
+        Vector2d ballPos = m_ball.getPosition();
+        Vector2d ballVel = m_ball.getVelocity();
+
+        if (ballVel.x > 0 && aiReactionTimer >= AI_REACTION_DELAY) {
+            float predictedY = simulateWallBounces(ballPos, ballVel, aiRect.x);
+
+            float aiCenterY = aiRect.y + aiRect.height / 2;
+
+            float diff = predictedY - aiCenterY;
+
+            if (std::abs(diff) > 5.0f) {
+                float desiredSpeed = (diff > 0 ? 1 : -1) * AI_MAX_SPEED;
+                aiVelocity += (desiredSpeed - aiVelocity) * std::min(1.f, AI_ACCEL * dt / AI_MAX_SPEED);
+            }
+            else {
+                aiVelocity = 0.0f;
+            }
+
+            m_ai.moveY(aiVelocity * dt);
+        }
+
+        // Ball update
+        m_ball.update(dt);
+
+        // Paddle collisions
+        RectangleShape r1 = m_player.getRect();
+        RectangleShape r2 = m_ai.getRect();
+        Vector2d b = m_ball.getPosition();
+
+        if (b.x - m_ball.getRadius() < r1.x + r1.width &&
+            b.x + m_ball.getRadius() > r1.x &&
+            b.y > r1.y && b.y < r1.y + r1.height) {
+            m_ball.setVelocity(Vector2d(std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+            aiReactionTimer = 0.0f;
+        }
+
+        if (b.x + m_ball.getRadius() > r2.x &&
+            b.x - m_ball.getRadius() < r2.x + r2.width &&
+            b.y > r2.y && b.y < r2.y + r2.height) {
+            m_ball.setVelocity(Vector2d(-std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+            aiReactionTimer = 0.0f;
+        }
+
+        // Scoring
+        if (b.x < 0) {
+            scoreAi++;
+            resetBall(-BALL_SPEED);
+        }
+        if (b.x > WIDTH) {
+            scorePlayer++;
+            resetBall(BALL_SPEED);
+        }
+
+        // Game over
+        if (scorePlayer == 10 || scoreAi == 10) {
+            winState = GAME_OVER;
+            player = (scorePlayer == 10) ? PLAYER_1 : PLAYER_2;
+        }
+    }
+
+    void resetBall(float vx) {
+        m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+        m_ball.setVelocity(Vector2d(vx, BALL_SPEED));
+        aiVelocity = 0.0f;
+        aiReactionTimer = 0.0f;
+    }
+
+    void render(sf::RenderWindow& window) override {
+        window.setFramerateLimit(0);
+
+        auto drawRect = [&](RectangleShape r) {
+            sf::RectangleShape shape;
+            shape.setSize(sf::Vector2f(r.width, r.height));
+            shape.setPosition(r.x, r.y);
+            shape.setFillColor(sf::Color::White);
+            window.draw(shape);
+            };
+
+        drawRect(m_player.getRect());
+        drawRect(m_ai.getRect());
+
+        sf::Text text;
+        text.setFont(font);
+        text.setString("YOU: " + to_string(scorePlayer));
+        text.setPosition(50, 10);
+        window.draw(text);
+
+        text.setString("AI: " + to_string(scoreAi));
+        text.setPosition(WIDTH - 150, 10);
+        window.draw(text);
+
+        sf::CircleShape ballShape;
+        ballShape.setRadius(m_ball.getRadius());
+        ballShape.setOrigin(m_ball.getRadius(), m_ball.getRadius());
+        ballShape.setPosition(m_ball.getPosition().x, m_ball.getPosition().y);
+        ballShape.setFillColor(sf::Color::White);
+        window.draw(ballShape);
+    }
+};
+
+
+
 class MainWindow : public GameWindow
 {
 public:
     void handleEvent(const sf::Event& event) override {
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
-            winState = PLAY_GAME_PLAYERS;
+            winState = MODE_SELECT;
         }
     }
 
@@ -221,6 +497,8 @@ public:
     }
     void render(sf::RenderWindow& window)
     {
+        window.setFramerateLimit(FPS);
+
         sf::Text titleText;
         titleText.setFont(font);
         titleText.setString("PONG FOOLERY");
@@ -233,6 +511,63 @@ public:
 
         window.draw(titleText);
         window.draw(enterKeyText);
+    }
+};
+
+class ModeSelectWindow : public GameWindow
+{
+    int gamemode = 0;
+public:
+    void handleEvent(const sf::Event& event) override
+    {
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
+        {
+            if (gamemode == 0)
+                winState = PLAY_GAME_PLAYERS;
+            else
+                winState = PLAY_GAME_AI;
+        }
+    }
+
+    void update()
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            gamemode--;
+            if (gamemode < 0)
+                gamemode = 1;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            gamemode = (gamemode + 1) % 2;
+        }
+
+    }
+
+    void render(sf::RenderWindow& window)
+    {
+        window.setFramerateLimit(FPS);
+
+        sf::Text modeSelectText;
+        modeSelectText.setFont(font);
+        modeSelectText.setString("SELECT A MODE TO PLAY: ");
+        modeSelectText.setPosition(100, 100);
+
+        sf::Text pvpText;
+        pvpText.setFont(font);
+        pvpText.setString("1. PLAY WITH A FRIEND");
+        pvpText.setFillColor(gamemode == 0 ? sf::Color::Green : sf::Color::White);
+        pvpText.setPosition(100, 200);
+
+        sf::Text aiText;
+        aiText.setFont(font);
+        aiText.setString("2. PLAY WITH CPU");
+        aiText.setFillColor(gamemode == 1 ? sf::Color::Green : sf::Color::White);
+        aiText.setPosition(100, 300);
+
+        window.draw(modeSelectText);
+        window.draw(pvpText);
+        window.draw(aiText);
     }
 };
 
@@ -251,6 +586,8 @@ public:
     }
     void render(sf::RenderWindow& window)
     {
+        window.setFramerateLimit(FPS);
+
         sf::Text gameOverText;
         gameOverText.setFont(font);
         gameOverText.setString("GAMEOVER!!!");
@@ -283,8 +620,12 @@ void setGameWindow(GameWindow* &game)
         delete game;
     if (winState == MAIN_GAME)
         game = new MainWindow();
+    else if (winState == MODE_SELECT)
+        game = new ModeSelectWindow();
     else if (winState == PLAY_GAME_PLAYERS)
         game = new PongGame();
+    else if (winState == PLAY_GAME_AI)
+        game = new PongGameAi();
     else if (winState == GAME_OVER)
         game = new GameOverWindow();
 }
@@ -292,7 +633,7 @@ void setGameWindow(GameWindow* &game)
 // Main loop
 int main() {
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pong Game");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(FPS);
     font.loadFromFile("./fonts/font.ttf");
     GameWindow* game = nullptr;
     setGameWindow(game);
