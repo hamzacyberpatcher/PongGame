@@ -12,6 +12,7 @@ sf::Font font;
 
 enum WINDOW_STATE
 {
+    MAIN_GAME,
     PLAY_GAME_PLAYERS,
     GAME_OVER
 };
@@ -23,7 +24,7 @@ enum PlayerWon
     NONE
 };
 
-WINDOW_STATE winState = PLAY_GAME_PLAYERS;
+WINDOW_STATE winState = MAIN_GAME;
 PlayerWon player;
 
 // Utility structs
@@ -89,6 +90,7 @@ class GameWindow
 public:
     virtual void update() = 0;
     virtual void render(sf::RenderWindow& window) = 0;
+    virtual void handleEvent(const sf::Event& event) {}
 };
 
 // Game class
@@ -204,16 +206,48 @@ public:
     }
 };
 
+class MainWindow : public GameWindow
+{
+public:
+    void handleEvent(const sf::Event& event) override {
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+            winState = PLAY_GAME_PLAYERS;
+        }
+    }
+
+    void update()
+    {
+        return;
+    }
+    void render(sf::RenderWindow& window)
+    {
+        sf::Text titleText;
+        titleText.setFont(font);
+        titleText.setString("PONG FOOLERY");
+        titleText.setPosition(100, 100);
+
+        sf::Text enterKeyText;
+        enterKeyText.setFont(font);
+        enterKeyText.setString("PRESS ENTER KEY TO START PONGING!!!");
+        enterKeyText.setPosition(100, 200);
+
+        window.draw(titleText);
+        window.draw(enterKeyText);
+    }
+};
+
 class GameOverWindow : public GameWindow
 {
 public:
-    void update()
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-        {
-            winState = PLAY_GAME_PLAYERS;
+    void handleEvent(const sf::Event& event) override {
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+            winState = MAIN_GAME;
             player = NONE;
         }
+    }
+    void update()
+    {
+        return;
     }
     void render(sf::RenderWindow& window)
     {
@@ -242,12 +276,14 @@ public:
     }
 };
 
+
 void setGameWindow(GameWindow* &game)
 {
     if (game)
         delete game;
-
-    if (winState == PLAY_GAME_PLAYERS)
+    if (winState == MAIN_GAME)
+        game = new MainWindow();
+    else if (winState == PLAY_GAME_PLAYERS)
         game = new PongGame();
     else if (winState == GAME_OVER)
         game = new GameOverWindow();
@@ -267,9 +303,8 @@ int main() {
         while (window.pollEvent(event))
             if (event.type == sf::Event::Closed)
                 window.close();
-
-        
-        game->update();
+            else
+                game->handleEvent(event);
 
         if (currState != winState)
         {
@@ -277,9 +312,14 @@ int main() {
             currState = winState;
         }
 
+        game->update();
+
         window.clear(sf::Color::Black);
         game->render(window);
         window.display();
+
+        
+
     }
 
     delete game;
