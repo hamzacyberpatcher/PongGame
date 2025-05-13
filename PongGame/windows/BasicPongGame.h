@@ -95,7 +95,6 @@ public:
     {
         if (scoreP1 == 10 || scoreP2 == 10)
         {
-            winState = GAME_OVER;
             if (winState == PLAY_GAME_PLAYERS)
             {
                 player = (scoreP1 == 10) ? PLAYER_1 : PLAYER_2;
@@ -104,6 +103,7 @@ public:
             {
                 player = (scoreP1 == 10) ? HUMAN : AI;
             }
+            winState = GAME_OVER;
         }
     }
 
