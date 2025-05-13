@@ -13,10 +13,118 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{9262d0a3-8529-4d40-8b11-ad7b14f13902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\essentials">
+      <UniqueIdentifier>{b2ad6d33-c29d-4a78-84f9-4b374e54a19e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\windows">
+      <UniqueIdentifier>{5915ff46-8de7-4c48-b397-eb9b85af1e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fonts">
+      <UniqueIdentifier>{3d8d096e-59d3-40fc-947c-c94613f772fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\sprites">
+      <UniqueIdentifier>{5835e0c3-7f58-4bf8-a4dc-667c87b15e16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AI\midAI.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\hardAI.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\easyAI.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="essentials\ball.h">
+      <Filter>Header Files\essentials</Filter>
+    </ClInclude>
+    <ClInclude Include="essentials\paddle.h">
+      <Filter>Header Files\essentials</Filter>
+    </ClInclude>
+    <ClInclude Include="essentials\utility.h">
+      <Filter>Header Files\essentials</Filter>
+    </ClInclude>
+    <ClInclude Include="essentials\vars.h">
+      <Filter>Header Files\essentials</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\diffSelectWindow.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\gameOverWindow.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\mainwindow.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\modeSelectWindow.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\gamewindow.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\yoster.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="sprites\background.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\bluethrow.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\bluewin.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\cpu.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\easy.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\hard.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\lost.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\normal.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\player.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\playerwin.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\pongball.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\pvp.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\redthrow.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\redwin.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\swords.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
+    <Image Include="sprites\throw.png">
+      <Filter>Resource Files\sprites</Filter>
+    </Image>
   </ItemGroup>
 </Project>

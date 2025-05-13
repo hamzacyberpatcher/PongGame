@@ -135,6 +135,41 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AI\easyAI.h" />
+    <ClInclude Include="AI\hardAI.h" />
+    <ClInclude Include="AI\midAI.h" />
+    <ClInclude Include="essentials\ball.h" />
+    <ClInclude Include="essentials\paddle.h" />
+    <ClInclude Include="essentials\utility.h" />
+    <ClInclude Include="essentials\vars.h" />
+    <ClInclude Include="windows\diffSelectWindow.h" />
+    <ClInclude Include="windows\gameOverWindow.h" />
+    <ClInclude Include="windows\gamewindow.h" />
+    <ClInclude Include="windows\mainwindow.h" />
+    <ClInclude Include="windows\modeSelectWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\yoster.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="sprites\background.png" />
+    <Image Include="sprites\bluethrow.png" />
+    <Image Include="sprites\bluewin.png" />
+    <Image Include="sprites\cpu.png" />
+    <Image Include="sprites\easy.png" />
+    <Image Include="sprites\hard.png" />
+    <Image Include="sprites\lost.png" />
+    <Image Include="sprites\normal.png" />
+    <Image Include="sprites\player.png" />
+    <Image Include="sprites\playerwin.png" />
+    <Image Include="sprites\pongball.png" />
+    <Image Include="sprites\pvp.png" />
+    <Image Include="sprites\redthrow.png" />
+    <Image Include="sprites\redwin.png" />
+    <Image Include="sprites\swords.png" />
+    <Image Include="sprites\throw.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
