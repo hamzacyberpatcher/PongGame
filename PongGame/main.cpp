@@ -509,8 +509,7 @@ public:
             float diff = predictedY - aiCenterY;
 
             if (std::abs(diff) > 5.0f) {
-                float desiredSpeed = (diff > 0 ? 1 : -1) * AI_MAX_SPEED;
-                aiVelocity += (desiredSpeed - aiVelocity) * std::min(1.f, AI_ACCEL * dt / AI_MAX_SPEED);
+                aiVelocity = (diff > 0 ? 1 : -1) * PADDLE_SPEED;
             }
             else {
                 aiVelocity = 0.0f;
