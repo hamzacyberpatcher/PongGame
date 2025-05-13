@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <string>
 #include "windows/mainwindow.h"
 #include "windows/modeSelectWindow.h"
 #include "windows/diffSelectWindow.h"
