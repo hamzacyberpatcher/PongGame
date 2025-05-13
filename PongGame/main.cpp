@@ -247,9 +247,9 @@ public:
         float ballY = m_ball.getPosition().y;
 
         if (ballY < aiCenter - 10)
-            m_ai.moveY(-PADDLE_SPEED * 0.75f * dt);
+            m_ai.moveY(-PADDLE_SPEED  * dt);
         else if (ballY > aiCenter + 10)
-            m_ai.moveY(PADDLE_SPEED * 0.75f * dt);
+            m_ai.moveY(PADDLE_SPEED  * dt);
 
         // Ball logic
         m_ball.update(dt);
