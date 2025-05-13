@@ -13,7 +13,7 @@ public:
             player = NONE;
         }
     }
-    void update()
+    void update(float dt = 0)
     {
         return;
     }

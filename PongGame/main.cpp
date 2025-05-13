@@ -39,6 +39,8 @@ int main() {
     setGameWindow(game);
     WINDOW_STATE currState = winState;
 
+    sf::Clock clock;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -53,7 +55,9 @@ int main() {
             currState = winState;
         }
 
-        game->update();
+        float dt = clock.restart().asSeconds();
+
+        game->update(dt);
 
         window.clear(sf::Color::Black);
         game->render(window);

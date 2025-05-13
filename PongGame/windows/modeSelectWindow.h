@@ -19,7 +19,7 @@ public:
         }
     }
 
-    void update()
+    void update(float dt = 0)
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {

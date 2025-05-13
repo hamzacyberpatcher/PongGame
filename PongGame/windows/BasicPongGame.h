@@ -12,14 +12,37 @@ protected:
     Ball m_ball;
     Paddle m_p1;
     Paddle m_p2;
-    sf::Clock clock;
     int scoreP1;
     int scoreP2;
+    bool gameStartPause;
+    bool gamePause;
+    bool m_pausePressedLastFrame = false;
 public:
     BasicPongGame()
         : m_ball(Vector2d(WIDTH / 2, HEIGHT / 2), 15),
         m_p1(RectangleShape(50, HEIGHT / 2 - 50, 15, 100)),
-        m_p2(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)), scoreP1(0), scoreP2(0) {
+        m_p2(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)), scoreP1(0), scoreP2(0),
+        gameStartPause(true), gamePause(false) {
+    }
+
+    void handleEvent(const sf::Event& event)
+    {
+        if (gameStartPause)
+        {
+            for (int k = sf::Keyboard::A; k < sf::Keyboard::KeyCount; k++)
+            {
+                if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(k)))
+                    gameStartPause = false;
+            }
+        }
+
+        bool isPausePressedNow = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+
+        if (isPausePressedNow && !m_pausePressedLastFrame) {
+            gamePause = !gamePause;
+        }
+
+        m_pausePressedLastFrame = isPausePressedNow;
     }
 
     void moveP1(float dt)
@@ -84,24 +107,37 @@ public:
         }
     }
 
-    virtual void update() {
-        float dt = clock.restart().asSeconds();
+    virtual void update(float dt = 0) {
+        
+        if (!gameStartPause && !gamePause)
+        {
 
-        // Input
+            // Input
 
-        moveP1(dt);
-        moveP2(dt);
+            moveP1(dt);
+            moveP2(dt);
 
-        // Ball logic
-        m_ball.update(dt);
+            // Ball logic
+            m_ball.update(dt);
 
-        paddleCollision();
+            paddleCollision();
 
-        gameOverCheck();
+            gameOverCheck();
+        }
     }
 
     virtual void render(sf::RenderWindow& window) {
         window.setFramerateLimit(0);
+
+        if (gameStartPause || gamePause)
+        {
+            sf::Text text;
+            text.setFont(font);
+            text.setString(gameStartPause ? "Press Any key to start playing" : "Press Escape to continue playing");
+            text.setCharacterSize(30);
+            text.setPosition(WIDTH / 2 - 200, HEIGHT / 2 - 60);
+            window.draw(text);
+        }
 
         // Draw paddles
         sf::RectangleShape paddle1;
