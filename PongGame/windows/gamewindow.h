@@ -6,6 +6,7 @@
 #include "essentials/vars.h"
 #include "essentials/utility.h"
 
+// Game class
 class GameWindow
 {
 public:
@@ -14,7 +15,7 @@ public:
     virtual void handleEvent(const sf::Event& event) {}
 };
 
-// Game class
+
 class PongGame : public GameWindow {
     Ball m_ball;
     Paddle m_p1;
@@ -93,16 +94,17 @@ public:
         window.setFramerateLimit(0);
 
         // Draw paddles
-        auto drawRect = [&](RectangleShape r) {
-            sf::RectangleShape shape;
-            shape.setSize(sf::Vector2f(r.width, r.height));
-            shape.setPosition(r.x, r.y);
-            shape.setFillColor(sf::Color::White);
-            window.draw(shape);
-            };
+        sf::RectangleShape paddle1;
+        paddle1.setSize(sf::Vector2f(m_p1.getRect().width, m_p1.getRect().height));
+        paddle1.setPosition(m_p1.getRect().x, m_p1.getRect().y);
+        paddle1.setFillColor(sf::Color::White);
+        window.draw(paddle1);
 
-        drawRect(m_p1.getRect());
-        drawRect(m_p2.getRect());
+        sf::RectangleShape paddle2;
+        paddle2.setSize(sf::Vector2f(m_p2.getRect().width, m_p2.getRect().height));
+        paddle2.setPosition(m_p2.getRect().x, m_p2.getRect().y);
+        paddle2.setFillColor(sf::Color::White);
+        window.draw(paddle2);
 
 
 

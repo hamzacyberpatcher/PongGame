@@ -22,7 +22,8 @@ public:
         scorePlayer(0), scoreAi(0) {
     }
 
-    void update() override {
+    void update()
+    {
         float dt = clock.restart().asSeconds();
 
         // Player input
@@ -94,18 +95,21 @@ public:
         }
     }
 
-    void render(sf::RenderWindow& window) override {
+    void render(sf::RenderWindow& window)
+    {
         window.setFramerateLimit(0);
-        auto drawRect = [&](RectangleShape r) {
-            sf::RectangleShape shape;
-            shape.setSize(sf::Vector2f(r.width, r.height));
-            shape.setPosition(r.x, r.y);
-            shape.setFillColor(sf::Color::White);
-            window.draw(shape);
-            };
+        
+        sf::RectangleShape paddleHuman;
+        paddleHuman.setSize(sf::Vector2f(m_player.getRect().width, m_player.getRect().height));
+        paddleHuman.setPosition(m_player.getRect().x, m_player.getRect().y);
+        paddleHuman.setFillColor(sf::Color::White);
+        window.draw(paddleHuman);
 
-        drawRect(m_player.getRect());
-        drawRect(m_ai.getRect());
+        sf::RectangleShape paddleAi;
+        paddleAi.setSize(sf::Vector2f(m_ai.getRect().width, m_ai.getRect().height));
+        paddleAi.setPosition(m_ai.getRect().x, m_ai.getRect().y);
+        paddleAi.setFillColor(sf::Color::White);
+        window.draw(paddleAi);
 
         sf::Text text;
         text.setFont(font);
