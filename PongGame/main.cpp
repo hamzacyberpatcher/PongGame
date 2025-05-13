@@ -191,7 +191,7 @@ public:
         drawRect(m_p1.getRect());
         drawRect(m_p2.getRect());
 
-        
+
 
         sf::Text text;
         text.setFont(font);
@@ -204,7 +204,7 @@ public:
         text.setPosition(WIDTH - 200, 10);
 
         window.draw(text);
-        
+
 
         // Draw ball
         sf::CircleShape ballShape;
@@ -617,15 +617,119 @@ public:
     {
         window.setFramerateLimit(FPS);
 
+        sf::Texture backgroundTexture;
+        if (!backgroundTexture.loadFromFile("sprites/background.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite backgroundSprite;
+        backgroundSprite.setTexture(backgroundTexture);
+
+        sf::Vector2u backgroundTextureSize = backgroundTexture.getSize();
+
+        // Center the scaled sprite
+        backgroundSprite.setOrigin(backgroundTextureSize.x / 2.f, backgroundTextureSize.y / 2.f);
+        backgroundSprite.setPosition(WIDTH / 2.f, HEIGHT / 2.f);
+
+        backgroundSprite.setScale(1400.f / backgroundTextureSize.x, 1000.f / backgroundTextureSize.y);
+
+
+
+        sf::Texture swordTexture;
+
+        // Load the image file into the texture
+        if (!swordTexture.loadFromFile("sprites/swords.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite swordsSprite;
+        swordsSprite.setTexture(swordTexture);
+
+        sf::Vector2u swordTextureSize = swordTexture.getSize();
+
+        // Center the scaled sprite
+        swordsSprite.setOrigin(swordTextureSize.x / 2.f, swordTextureSize.y / 2.f);
+        swordsSprite.setPosition(WIDTH / 2.05f, HEIGHT / 4.f);
+
+        swordsSprite.setScale(600.f / swordTextureSize.x, 600.f / swordTextureSize.y);
+
+
+        sf::Texture ballTexture;
+        if (!ballTexture.loadFromFile("sprites/pongball.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite ballSprite1;
+        ballSprite1.setTexture(ballTexture);
+
+        sf::Vector2u ballTextureSize = ballTexture.getSize();
+
+        // Center the scaled sprite
+        ballSprite1.setOrigin(ballTextureSize.x / 2.f, ballTextureSize.y / 2.f);
+        ballSprite1.setPosition(WIDTH / 2.05f, HEIGHT - 775);
+
+        ballSprite1.setScale(275.f / ballTextureSize.x, 275.f / ballTextureSize.y);
+
+
+        sf::Texture redThrowTexture;
+        if (!redThrowTexture.loadFromFile("sprites/redthrow.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Texture blueThrowTexture;
+        if (!blueThrowTexture.loadFromFile("sprites/bluethrow.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite throwSprite1;
+        throwSprite1.setTexture(redThrowTexture);
+
+        throwSprite1.setOrigin(ballTextureSize.x / 2.f, ballTextureSize.y / 2.f);
+        throwSprite1.setPosition(WIDTH - 1300, HEIGHT - 500);
+        throwSprite1.setScale(225.f / ballTextureSize.x, 225.f / ballTextureSize.y);
+
+        throwSprite1.setRotation(-25);
+
+        sf::Sprite throwSprite2;
+        throwSprite2.setTexture(blueThrowTexture);
+
+        throwSprite2.setOrigin(ballTextureSize.x / 2.f, ballTextureSize.y / 2.f);
+        throwSprite2.setPosition(WIDTH - 500, HEIGHT - 575);
+        throwSprite2.setScale(225.f / ballTextureSize.x, 225.f / ballTextureSize.y);
+
+        throwSprite2.setRotation(150);
+
+
+
         sf::Text titleText;
         titleText.setFont(font);
-        titleText.setString("PONG FOOLERY");
-        titleText.setPosition(100, 100);
+        titleText.setString("PONG FIGHT");
+        titleText.setCharacterSize(75);
+        titleText.setPosition(1600.f / 3.f, 900.f / 3.f);
 
         sf::Text enterKeyText;
         enterKeyText.setFont(font);
         enterKeyText.setString("PRESS ENTER KEY TO START PONGING!!!");
-        enterKeyText.setPosition(100, 200);
+        enterKeyText.setCharacterSize(35);
+        enterKeyText.setPosition(400, 500);
+
+        window.clear(sf::Color::Black);
+
+        window.draw(backgroundSprite);
+        window.draw(swordsSprite);
+        window.draw(ballSprite1);
+        window.draw(throwSprite1);
+        window.draw(throwSprite2);
 
         window.draw(titleText);
         window.draw(enterKeyText);
@@ -666,26 +770,117 @@ public:
     {
         window.setFramerateLimit(FPS);
 
+        // Load the image file into the texture
+        sf::Texture swordTexture;
+        if (!swordTexture.loadFromFile("sprites/swords.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite swordsSprite;
+        swordsSprite.setTexture(swordTexture);
+
+        sf::Vector2u swordTextureSize = swordTexture.getSize();
+
+        // Center the scaled sprite
+        swordsSprite.setOrigin(swordTextureSize.x / 2.f, swordTextureSize.y / 2.f);
+        swordsSprite.setPosition(WIDTH - 400, HEIGHT / 4.f);
+
+        swordsSprite.setScale(600.f / swordTextureSize.x, 600.f / swordTextureSize.y);
+
+        sf::Texture pvpTexture;
+        if (!pvpTexture.loadFromFile("sprites/pvp.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite pvpSprite;
+        pvpSprite.setTexture(pvpTexture);
+
+        sf::Vector2u pvpTextureSize = pvpTexture.getSize();
+
+        // Center the scaled sprite
+        pvpSprite.setOrigin(pvpTextureSize.x / 2.f, pvpTextureSize.y / 2.f);
+        pvpSprite.setPosition(WIDTH - 400, HEIGHT - 300);
+
+        pvpSprite.setScale(700 / pvpTextureSize.x, 600 / pvpTextureSize.y);
+
+        sf::Texture playerTexture;
+        if (!playerTexture.loadFromFile("sprites/player.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite playerSprite;
+        playerSprite.setTexture(playerTexture);
+
+        sf::Vector2u playerTextureSize = playerTexture.getSize();
+
+        // Center the scaled sprite
+        playerSprite.setOrigin(playerTextureSize.x / 2.f, playerTextureSize.y / 2.f);
+        playerSprite.setPosition(WIDTH - 600, HEIGHT - 300);
+
+        playerSprite.setScale(700 / playerTextureSize.x, 600 / playerTextureSize.y);
+
+
+
+        sf::Texture cpuTexture;
+        if (!cpuTexture.loadFromFile("sprites/cpu.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite cpuSprite;
+        cpuSprite.setTexture(cpuTexture);
+
+        sf::Vector2u cpuTextureSize = cpuTexture.getSize();
+
+        // Center the scaled sprite
+        cpuSprite.setOrigin(cpuTextureSize.x / 2.f, cpuTextureSize.y / 2.f);
+        cpuSprite.setPosition(WIDTH - 200, HEIGHT - 300);
+
+        cpuSprite.setScale(500 / cpuTextureSize.x, 400 / cpuTextureSize.y);
+
+
         sf::Text modeSelectText;
         modeSelectText.setFont(font);
-        modeSelectText.setString("SELECT A MODE TO PLAY: ");
+        modeSelectText.setString("SELECT A MODE TO PLAY");
         modeSelectText.setPosition(100, 100);
+        modeSelectText.setCharacterSize(70);
 
         sf::Text pvpText;
         pvpText.setFont(font);
         pvpText.setString("1. PLAY WITH A FRIEND");
         pvpText.setFillColor(gamemode == 0 ? sf::Color::Green : sf::Color::White);
-        pvpText.setPosition(100, 200);
+        pvpText.setPosition(100, 400);
+        pvpText.setCharacterSize(50);
 
         sf::Text aiText;
         aiText.setFont(font);
         aiText.setString("2. PLAY WITH CPU");
         aiText.setFillColor(gamemode == 1 ? sf::Color::Green : sf::Color::White);
-        aiText.setPosition(100, 300);
+        aiText.setPosition(100, 700);
+        aiText.setCharacterSize(50);
 
         window.draw(modeSelectText);
         window.draw(pvpText);
         window.draw(aiText);
+
+        if (gamemode == 0)
+        {
+            window.draw(pvpSprite);
+        }
+        else
+        {
+            window.draw(playerSprite);
+            window.draw(cpuSprite);
+        }
+
+        window.draw(swordsSprite);
     }
 };
 
@@ -716,7 +911,10 @@ public:
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            gamemode = (gamemode + 1) % 3;
+            gamemode++;
+
+            if (gamemode == 3)
+                gamemode = 0;
         }
 
     }
@@ -724,6 +922,63 @@ public:
     void render(sf::RenderWindow& window)
     {
         window.setFramerateLimit(FPS);
+
+
+        sf::Texture easyTexture;
+        if (!easyTexture.loadFromFile("sprites/easy.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite easySprite;
+        easySprite.setTexture(easyTexture);
+
+        sf::Vector2u easyTextureSize = easyTexture.getSize();
+
+        // Center the scaled sprite
+        easySprite.setOrigin(easyTextureSize.x / 2.f, easyTextureSize.y / 2.f);
+        easySprite.setPosition(WIDTH - 400, HEIGHT - 500);
+
+        easySprite.setScale(700 / easyTextureSize.x, 600 / easyTextureSize.y);
+
+        sf::Texture normalTexture;
+        if (!normalTexture.loadFromFile("sprites/normal.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite normalSprite;
+        normalSprite.setTexture(normalTexture);
+
+        sf::Vector2u normalTextureSize = normalTexture.getSize();
+
+        // Center the scaled sprite
+        normalSprite.setOrigin(normalTextureSize.x / 2.f, normalTextureSize.y / 2.f);
+        normalSprite.setPosition(WIDTH - 400, HEIGHT - 500);
+
+        normalSprite.setScale(700 / normalTextureSize.x, 600 / normalTextureSize.y);
+
+
+        sf::Texture hardTexture;
+        if (!hardTexture.loadFromFile("sprites/hard.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite hardSprite;
+        hardSprite.setTexture(hardTexture);
+
+        sf::Vector2u hardTextureSize = hardTexture.getSize();
+
+        // Center the scaled sprite
+        hardSprite.setOrigin(hardTextureSize.x / 2.f, hardTextureSize.y / 2.f);
+        hardSprite.setPosition(WIDTH - 400, HEIGHT - 500);
+
+        hardSprite.setScale(700 / hardTextureSize.x, 600 / hardTextureSize.y);
+
 
         sf::Text modeSelectText;
         modeSelectText.setFont(font);
@@ -752,6 +1007,14 @@ public:
         window.draw(ezText);
         window.draw(midText);
         window.draw(hardText);
+
+        if (gamemode == 0)
+            window.draw(easySprite);
+        else if (gamemode == 1)
+            window.draw(normalSprite);
+        else
+            window.draw(hardSprite);
+
     }
 };
 
@@ -772,19 +1035,95 @@ public:
     {
         window.setFramerateLimit(FPS);
 
+        sf::Texture playerWinTexture;
+        // Load the image file into the texture
+        if (!playerWinTexture.loadFromFile("sprites/playerwin.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite playerWinSprite;
+        playerWinSprite.setTexture(playerWinTexture);
+
+        sf::Vector2u winTextureSize = playerWinTexture.getSize();
+
+        // Center the scaled sprite
+        playerWinSprite.setOrigin(winTextureSize.x / 2.f, winTextureSize.y / 2.f);
+        playerWinSprite.setPosition(WIDTH / 2.05f, HEIGHT / 2.f);
+
+        playerWinSprite.setScale(400.f / winTextureSize.x, 400.f / winTextureSize.y);
+
+
+        sf::Texture redWinTexture;
+        // Load the image file into the texture
+        if (!redWinTexture.loadFromFile("sprites/redwin.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite redWinSprite;
+        redWinSprite.setTexture(redWinTexture);
+
+        // Center the scaled sprite
+        redWinSprite.setOrigin(winTextureSize.x / 2.f, winTextureSize.y / 2.f);
+        redWinSprite.setPosition(WIDTH / 2.05f, HEIGHT / 2.f);
+
+        redWinSprite.setScale(400.f / winTextureSize.x, 400.f / winTextureSize.y);
+
+
+
+
+        sf::Texture blueWinTexture;
+        if (!blueWinTexture.loadFromFile("sprites/bluewin.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite blueWinSprite;
+        blueWinSprite.setTexture(blueWinTexture);
+
+        // Center the scaled sprite
+        blueWinSprite.setOrigin(winTextureSize.x / 2.f, winTextureSize.y / 2.f);
+        blueWinSprite.setPosition(WIDTH / 2.05f, HEIGHT / 2.f);
+
+        blueWinSprite.setScale(400.f / winTextureSize.x, 400.f / winTextureSize.y);
+
+
+        sf::Texture lostTexture;
+        if (!lostTexture.loadFromFile("sprites/lost.png")) // Replace with your image file path
+        {
+            // Error handling if the image fails to load
+            cout << "ERROR!" << endl;
+        }
+
+        sf::Sprite lostSprite;
+        lostSprite.setTexture(lostTexture);
+
+        // Center the scaled sprite
+        lostSprite.setOrigin(winTextureSize.x / 2.f, winTextureSize.y / 2.f);
+        lostSprite.setPosition(WIDTH / 2.05f, HEIGHT / 2.f);
+
+        lostSprite.setScale(400.f / winTextureSize.x, 400.f / winTextureSize.y);
+
         sf::Text gameOverText;
         gameOverText.setFont(font);
         gameOverText.setString("GAMEOVER!!!");
-        gameOverText.setPosition(100, 100);
+        gameOverText.setPosition(800, 450);
+        gameOverText.setCharacterSize(100);
 
         sf::Text playerText;
         playerText.setFont(font);
-        playerText.setPosition(100, 200);
+        playerText.setPosition(350, 100);
+        playerText.setCharacterSize(75);
 
         sf::Text enterKey;
         enterKey.setFont(font);
         enterKey.setString("PRESS ENTER TO CONTINUE");
-        enterKey.setPosition(100, 300);
+        enterKey.setPosition(400, 650);
+        enterKey.setCharacterSize(50);
 
         if (player == PLAYER_1)
             playerText.setString("PLAYER 1 HAS WON!!!!");
@@ -797,12 +1136,20 @@ public:
 
         window.draw(enterKey);
         window.draw(playerText);
-        window.draw(gameOverText);
+        //window.draw(gameOverText);
+        if (player == PLAYER_1)
+            window.draw(redWinSprite);
+        else if (player == PLAYER_2)
+            window.draw(blueWinSprite);
+        else if (player == HUMAN)
+            window.draw(playerWinSprite);
+        else if (player == AI)
+            window.draw(lostSprite);
     }
 };
 
 
-void setGameWindow(GameWindow* &game)
+void setGameWindow(GameWindow*& game)
 {
     if (game)
         delete game;
@@ -828,7 +1175,7 @@ void setGameWindow(GameWindow* &game)
 int main() {
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pong Game");
     window.setFramerateLimit(FPS);
-    font.loadFromFile("./fonts/font.ttf");
+    font.loadFromFile("./fonts/yoster.ttf");
     GameWindow* game = nullptr;
     setGameWindow(game);
     WINDOW_STATE currState = winState;
@@ -853,11 +1200,13 @@ int main() {
         game->render(window);
         window.display();
 
-        
+
 
     }
 
     delete game;
+
+
 
     return 0;
 }
