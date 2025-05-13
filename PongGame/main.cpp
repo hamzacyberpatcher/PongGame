@@ -14,9 +14,6 @@
 #include "AI/midAI.h"
 #include "AI/hardAI.h"
 
-
-
-
 void setGameWindow(GameWindow*& game)
 {
     if (game)
