@@ -1,14 +1,9 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include "windows/mainwindow.h"
 #include "windows/modeSelectWindow.h"
 #include "windows/diffSelectWindow.h"
 #include "windows/PongGameHuman.h"
 #include "windows/gameOverWindow.h"
-#include "essentials/ball.h"
-#include "essentials/paddle.h"
-#include "essentials/vars.h"
-#include "essentials/utility.h"
 #include "AI/easyAI.h"
 #include "AI/midAI.h"
 #include "AI/hardAI.h"

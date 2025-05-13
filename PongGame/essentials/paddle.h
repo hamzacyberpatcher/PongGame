@@ -1,6 +1,5 @@
 #pragma once
 #include "utility.h"
-#include "vars.h"
 
 class Paddle {
     RectangleShape m_rect;

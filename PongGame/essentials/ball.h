@@ -1,6 +1,5 @@
 #pragma once
 #include "utility.h"
-#include "vars.h"
 
 class Ball {
     Vector2d m_position;

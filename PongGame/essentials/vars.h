@@ -1,5 +1,4 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 
 const int WIDTH = 1600;
 const int HEIGHT = 900;

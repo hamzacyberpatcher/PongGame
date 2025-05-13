@@ -1,11 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "essentials/ball.h"
-#include "essentials/paddle.h"
-#include "essentials/vars.h"
-#include "essentials/utility.h"
-#include "gamewindow.h"
+#include "../essentials/vars.h"
+#include "../windows/gamewindow.h"
 
 class ModeSelectWindow : public GameWindow
 {
