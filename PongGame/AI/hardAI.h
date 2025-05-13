@@ -1,9 +1,4 @@
 #pragma once
-#include <string>
-#include "essentials/ball.h"
-#include "essentials/paddle.h"
-#include "essentials/vars.h"
-#include "essentials/utility.h"
 #include "../windows/BasicPongGame.h"
 
 class PongGameAiHard : public BasicPongGame {
