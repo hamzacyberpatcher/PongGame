@@ -11,7 +11,8 @@
 class MainWindow : public GameWindow
 {
 public:
-    void handleEvent(const sf::Event& event) override {
+    void handleEvent(const sf::Event& event)
+    {
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
             winState = MODE_SELECT;
         }

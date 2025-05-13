@@ -11,7 +11,7 @@ class DifficultySelectWindow : public GameWindow
 {
     int gamemode = 0;
 public:
-    void handleEvent(const sf::Event& event) override
+    void handleEvent(const sf::Event& event)
     {
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
         {
