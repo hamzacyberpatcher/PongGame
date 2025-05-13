@@ -4,60 +4,19 @@
 #include "essentials/paddle.h"
 #include "essentials/vars.h"
 #include "essentials/utility.h"
-#include "windows/gamewindow.h"
+#include "../windows/BasicPongGame.h"
 
-
-class PongGameAiHard : public GameWindow {
-    Ball m_ball;
-    Paddle m_player;
-    Paddle m_ai;
-    sf::Clock clock;
+class PongGameAiHard : public BasicPongGame {
+    
     float aiVelocity = 0.0f;
     float aiReactionTimer = 0.0f;
-    const float AI_MAX_SPEED = PADDLE_SPEED;
-    const float AI_ACCEL = 800.0f;
     const float AI_REACTION_DELAY = 0.08f; // 80 ms reaction delay
-
-    int scorePlayer;
-    int scoreAi;
-
 public:
-    PongGameAiHard()
-        : m_ball(Vector2d(WIDTH / 2, HEIGHT / 2), 15),
-        m_player(RectangleShape(50, HEIGHT / 2 - 50, 15, 100)),
-        m_ai(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)),
-        scorePlayer(0), scoreAi(0) {
-    }
-
-    float simulateWallBounces(Vector2d pos, Vector2d vel, float targetX)
+    void moveP2(float dt)
     {
-        float time = (targetX - pos.x) / vel.x;
-        float predictedY = pos.y + vel.y * time;
-
-        // Reflect vertically if it goes out of bounds (simulate bounce)
-        while (predictedY < 0 || predictedY > HEIGHT) {
-            if (predictedY < 0)
-                predictedY = -predictedY;
-            else if (predictedY > HEIGHT)
-                predictedY = 2 * HEIGHT - predictedY;
-        }
-
-        return predictedY;
-    }
-
-    void update()
-    {
-        float dt = clock.restart().asSeconds();
         aiReactionTimer += dt;
-
-        // Player movement
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            m_player.moveY(-PADDLE_SPEED * dt);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            m_player.moveY(PADDLE_SPEED * dt);
-
         // Smart AI movement
-        RectangleShape aiRect = m_ai.getRect();
+        RectangleShape aiRect = m_p2.getRect();
         Vector2d ballPos = m_ball.getPosition();
         Vector2d ballVel = m_ball.getVelocity();
 
@@ -75,87 +34,23 @@ public:
                 aiVelocity = 0.0f;
             }
 
-            m_ai.moveY(aiVelocity * dt);
-        }
-
-        // Ball update
-        m_ball.update(dt);
-
-        // Paddle collisions
-        RectangleShape r1 = m_player.getRect();
-        RectangleShape r2 = m_ai.getRect();
-        Vector2d b = m_ball.getPosition();
-
-        if (b.x - m_ball.getRadius() < r1.x + r1.width &&
-            b.x + m_ball.getRadius() > r1.x &&
-            b.y > r1.y && b.y < r1.y + r1.height) {
-            m_ball.setVelocity(Vector2d(std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
-            aiReactionTimer = 0.0f;
-        }
-
-        if (b.x + m_ball.getRadius() > r2.x &&
-            b.x - m_ball.getRadius() < r2.x + r2.width &&
-            b.y > r2.y && b.y < r2.y + r2.height) {
-            m_ball.setVelocity(Vector2d(-std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
-            aiReactionTimer = 0.0f;
-        }
-
-        // Scoring
-        if (b.x < 0) {
-            scoreAi++;
-            resetBall(-BALL_SPEED);
-        }
-        if (b.x > WIDTH) {
-            scorePlayer++;
-            resetBall(BALL_SPEED);
-        }
-
-        // Game over
-        if (scorePlayer == 10 || scoreAi == 10) {
-            winState = GAME_OVER;
-            player = (scorePlayer == 10) ? HUMAN : AI;
+            m_p2.moveY(aiVelocity * dt);
         }
     }
 
-    void resetBall(float vx)
+    float simulateWallBounces(Vector2d pos, Vector2d vel, float targetX)
     {
-        m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
-        m_ball.setVelocity(Vector2d(vx, BALL_SPEED));
-        aiVelocity = 0.0f;
-        aiReactionTimer = 0.0f;
-    }
+        float time = (targetX - pos.x) / vel.x;
+        float predictedY = pos.y + vel.y * time;
 
-    void render(sf::RenderWindow& window)
-    {
-        window.setFramerateLimit(0);
+        // Reflect vertically if it goes out of bounds (simulate bounce)
+        while (predictedY < 0 || predictedY > HEIGHT) {
+            if (predictedY < 0)
+                predictedY = -predictedY;
+            else if (predictedY > HEIGHT)
+                predictedY = 2 * HEIGHT - predictedY;
+        }
 
-        sf::RectangleShape paddleHuman;
-        paddleHuman.setSize(sf::Vector2f(m_player.getRect().width, m_player.getRect().height));
-        paddleHuman.setPosition(m_player.getRect().x, m_player.getRect().y);
-        paddleHuman.setFillColor(sf::Color::White);
-        window.draw(paddleHuman);
-
-        sf::RectangleShape paddleAi;
-        paddleAi.setSize(sf::Vector2f(m_ai.getRect().width, m_ai.getRect().height));
-        paddleAi.setPosition(m_ai.getRect().x, m_ai.getRect().y);
-        paddleAi.setFillColor(sf::Color::White);
-        window.draw(paddleAi);
-
-        sf::Text text;
-        text.setFont(font);
-        text.setString("YOU: " + std::to_string(scorePlayer));
-        text.setPosition(50, 10);
-        window.draw(text);
-
-        text.setString("AI: " + std::to_string(scoreAi));
-        text.setPosition(WIDTH - 150, 10);
-        window.draw(text);
-
-        sf::CircleShape ballShape;
-        ballShape.setRadius(m_ball.getRadius());
-        ballShape.setOrigin(m_ball.getRadius(), m_ball.getRadius());
-        ballShape.setPosition(m_ball.getPosition().x, m_ball.getPosition().y);
-        ballShape.setFillColor(sf::Color::White);
-        window.draw(ballShape);
+        return predictedY;
     }
 };

@@ -143,11 +143,13 @@
     <ClInclude Include="essentials\paddle.h" />
     <ClInclude Include="essentials\utility.h" />
     <ClInclude Include="essentials\vars.h" />
+    <ClInclude Include="windows\BasicPongGame.h" />
     <ClInclude Include="windows\diffSelectWindow.h" />
     <ClInclude Include="windows\gameOverWindow.h" />
     <ClInclude Include="windows\gamewindow.h" />
     <ClInclude Include="windows\mainwindow.h" />
     <ClInclude Include="windows\modeSelectWindow.h" />
+    <ClInclude Include="windows\PongGameHuman.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\yoster.ttf" />

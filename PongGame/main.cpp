@@ -3,7 +3,7 @@
 #include "windows/mainwindow.h"
 #include "windows/modeSelectWindow.h"
 #include "windows/diffSelectWindow.h"
-#include "windows/gamewindow.h"
+#include "windows/PongGameHuman.h"
 #include "windows/gameOverWindow.h"
 #include "essentials/ball.h"
 #include "essentials/paddle.h"
@@ -22,7 +22,7 @@ void setGameWindow(GameWindow*& game)
     else if (winState == MODE_SELECT)
         game = new ModeSelectWindow();
     else if (winState == PLAY_GAME_PLAYERS)
-        game = new PongGame();
+        game = new PongGameHuman();
     else if (winState == AI_DIFFICULTY_SELECT)
         game = new DifficultySelectWindow();
     else if (winState == PLAY_GAME_AI_EASY)
