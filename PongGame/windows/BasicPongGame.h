@@ -16,13 +16,13 @@ protected:
     int scoreP2;
     bool gameStartPause;
     bool gamePause;
-    bool m_pausePressedLastFrame = false;
+    bool m_pausePressedLastFrame;
 public:
     BasicPongGame()
         : m_ball(Vector2d(WIDTH / 2, HEIGHT / 2), 15),
         m_p1(RectangleShape(50, HEIGHT / 2 - 50, 15, 100)),
         m_p2(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)), scoreP1(0), scoreP2(0),
-        gameStartPause(true), gamePause(false) {
+        gameStartPause(true), gamePause(false), m_pausePressedLastFrame(false) {
     }
 
     void handleEvent(const sf::Event& event)
