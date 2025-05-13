@@ -32,7 +32,7 @@ public:
 
     virtual void moveP2(float dt) = 0;
 
-    void paddleCollision()
+    virtual void paddleCollision()
     {
         // Collision with paddles
         RectangleShape r1 = m_p1.getRect();
@@ -68,7 +68,7 @@ public:
         }
     }
 
-    void scoring()
+    virtual void gameOverCheck()
     {
         if (scoreP1 == 10 || scoreP2 == 10)
         {
@@ -84,7 +84,7 @@ public:
         }
     }
 
-    void update() {
+    virtual void update() {
         float dt = clock.restart().asSeconds();
 
         // Input
@@ -97,10 +97,10 @@ public:
 
         paddleCollision();
 
-        scoring();
+        gameOverCheck();
     }
 
-    void render(sf::RenderWindow& window) {
+    virtual void render(sf::RenderWindow& window) {
         window.setFramerateLimit(0);
 
         // Draw paddles

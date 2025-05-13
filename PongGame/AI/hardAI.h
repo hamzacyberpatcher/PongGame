@@ -48,4 +48,38 @@ public:
 
         return predictedY;
     }
+
+    void paddleCollision()
+    {
+        // Paddle collisions
+        RectangleShape r1 = m_p1.getRect();
+        RectangleShape r2 = m_p2.getRect();
+        Vector2d b = m_ball.getPosition();
+
+        if (b.x - m_ball.getRadius() < r1.x + r1.width &&
+            b.x + m_ball.getRadius() > r1.x &&
+            b.y > r1.y && b.y < r1.y + r1.height) {
+            m_ball.setVelocity(Vector2d(std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+            aiReactionTimer = 0.0f;
+        }
+
+        if (b.x + m_ball.getRadius() > r2.x &&
+            b.x - m_ball.getRadius() < r2.x + r2.width &&
+            b.y > r2.y && b.y < r2.y + r2.height) {
+            m_ball.setVelocity(Vector2d(-std::abs(m_ball.getVelocity().x), m_ball.getVelocity().y));
+            aiReactionTimer = 0.0f;
+        }
+
+        // Scoring
+        if (b.x < 0) {
+            scoreP2++;
+            m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+            m_ball.setVelocity(Vector2d(BALL_SPEED, BALL_SPEED));
+        }
+        if (b.x > WIDTH) {
+            scoreP1++;
+            m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+            m_ball.setVelocity(Vector2d(BALL_SPEED, BALL_SPEED));
+        }
+    }
 };
