@@ -20,7 +20,7 @@ protected:
     bool m_pausePressedLastFrame;
 public:
     BasicPongGame()
-        : m_ball(Vector2d(WIDTH / 2, HEIGHT / 2), 15),
+        : m_ball(Vector2d(WIDTH / 2 - 33, HEIGHT / 2), 15),
         m_p1(RectangleShape(50, HEIGHT / 2 - 50, 15, 100)),
         m_p2(RectangleShape(WIDTH - 65, HEIGHT / 2 - 50, 15, 100)), scoreP1(0), scoreP2(0),
         gameStartPause(true), gamePause(false), m_pausePressedLastFrame(false) {
@@ -82,12 +82,12 @@ public:
         // Reset ball if out of bounds
         if (b.x < 0) {
             scoreP2++;
-            m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+            m_ball.setPosition(Vector2d(WIDTH / 2 - 33, HEIGHT / 2));
             m_ball.setVelocity(Vector2d(BALL_SPEED, BALL_SPEED));
         }
         if (b.x > WIDTH) {
             scoreP1++;
-            m_ball.setPosition(Vector2d(WIDTH / 2, HEIGHT / 2));
+            m_ball.setPosition(Vector2d(WIDTH / 2 - 33, HEIGHT / 2));
             m_ball.setVelocity(Vector2d(-BALL_SPEED, BALL_SPEED));
         }
     }
@@ -129,17 +129,23 @@ public:
             gameOverCheck();
         }
     }
-
+    
     virtual void render(sf::RenderWindow& window) {
         window.setFramerateLimit(0);
 
         sf::Texture bgTexture;
         bgTexture.loadFromFile("./sprites/court.png");
 
+        sf::Vector2u courtTextureSize = bgTexture.getSize();
+
+
         sf::Sprite bgSprite;
         bgSprite.setTexture(bgTexture);
         bgSprite.setPosition(sf::Vector2f(0, 0));
+        bgSprite.setScale(1600.f/courtTextureSize.x, 900.f / courtTextureSize.y);
         window.draw(bgSprite);
+
+
 
         if (gameStartPause || gamePause)
         {
@@ -155,13 +161,13 @@ public:
         sf::RectangleShape paddle1;
         paddle1.setSize(sf::Vector2f(m_p1.getRect().width, m_p1.getRect().height));
         paddle1.setPosition(m_p1.getRect().x, m_p1.getRect().y);
-        paddle1.setFillColor(sf::Color(222,36,36));
+        paddle1.setFillColor(sf::Color(46, 46, 176));
         window.draw(paddle1);
 
         sf::RectangleShape paddle2;
         paddle2.setSize(sf::Vector2f(m_p2.getRect().width, m_p2.getRect().height));
         paddle2.setPosition(m_p2.getRect().x, m_p2.getRect().y);
-        paddle2.setFillColor(sf::Color(46,46,176));
+        paddle2.setFillColor(sf::Color(222, 36, 36));
         window.draw(paddle2);
 
 

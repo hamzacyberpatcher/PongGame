@@ -4,7 +4,7 @@ const int WIDTH = 1600;
 const int HEIGHT = 900;
 const float PADDLE_SPEED = 400;
 const float BALL_SPEED = 500;
-const int FPS = 10;
+const int FPS = 20;
 
 sf::Font font;
 
