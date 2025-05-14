@@ -43,7 +43,7 @@ public:
             if (predictedY < 0)
                 predictedY = -predictedY;
             else if (predictedY > HEIGHT)
-                predictedY = 2 * HEIGHT - predictedY;
+                predictedY = HEIGHT - predictedY;
         }
 
         return predictedY;

@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
+#include <iostream>
 #include "../essentials/vars.h"
 #include "../windows/gamewindow.h"
+#include "../file/fileHandlers.h"
 
 class GameOverWindow : public GameWindow
 {
@@ -131,5 +133,47 @@ public:
             window.draw(playerWinSprite);
         else if (player == AI)
             window.draw(lostSprite);
+
+        sf::Text historyText;
+
+        if (player == PLAYER_1 || player == PLAYER_2)
+        {
+            std::vector<std::string> data = getHumanData();
+
+            std::string text;
+
+            text = "PLAYER 1 - PLAYER 2\n";
+
+            for (int i = 0; i < data.size(); i += 2)
+            {
+                text += (data[i] + "\t-\t" + data[i + 1] + "\n");
+
+                historyText.setString(text);
+                historyText.setFont(font);
+                historyText.setCharacterSize(35);
+                historyText.setPosition(WIDTH - 425, HEIGHT - 600);
+
+            }
+        }
+        else
+        {
+            std::vector<std::string> data = getAiData();
+
+            std::string text;
+
+            text = "HUMAN - AI\n";
+
+            for (int i = 0; i < data.size(); i += 2)
+            {
+                text += (data[i] + "\t-\t" + data[i + 1] + "\n");
+
+                historyText.setString(text);
+                historyText.setFont(font);
+                historyText.setCharacterSize(35);
+                historyText.setPosition(WIDTH - 425, HEIGHT - 600);
+
+            }
+        }
+        window.draw(historyText);
     }
 };

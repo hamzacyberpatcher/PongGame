@@ -5,6 +5,7 @@
 #include "../essentials/vars.h"
 #include "../essentials/utility.h"
 #include "./gamewindow.h"
+#include "../file/fileHandlers.h"
 
 class BasicPongGame : public GameWindow
 {
@@ -93,15 +94,18 @@ public:
 
     virtual void gameOverCheck()
     {
-        if (scoreP1 == 10 || scoreP2 == 10)
+        int maxScore = 3;
+        if (scoreP1 == maxScore || scoreP2 == maxScore)
         {
             if (winState == PLAY_GAME_PLAYERS)
             {
-                player = (scoreP1 == 10) ? PLAYER_1 : PLAYER_2;
+                appendDataHumans(scoreP1, scoreP2);
+                player = (scoreP1 == maxScore) ? PLAYER_1 : PLAYER_2;
             }
             else
             {
-                player = (scoreP1 == 10) ? HUMAN : AI;
+                appendDataAi(scoreP1, scoreP2);
+                player = (scoreP1 == maxScore) ? HUMAN : AI;
             }
             winState = GAME_OVER;
         }

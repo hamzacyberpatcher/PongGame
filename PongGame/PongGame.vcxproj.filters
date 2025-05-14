@@ -28,6 +28,9 @@
     <Filter Include="Resource Files\sprites">
       <UniqueIdentifier>{5835e0c3-7f58-4bf8-a4dc-667c87b15e16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\file">
+      <UniqueIdentifier>{ac74aa3e-0ad7-4178-9d5a-68df8dd4dd91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="windows\PongGameHuman.h">
       <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="file\fileHandlers.h">
+      <Filter>Header Files\file</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

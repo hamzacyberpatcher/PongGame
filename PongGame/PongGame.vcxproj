@@ -143,6 +143,7 @@
     <ClInclude Include="essentials\paddle.h" />
     <ClInclude Include="essentials\utility.h" />
     <ClInclude Include="essentials\vars.h" />
+    <ClInclude Include="file\fileHandlers.h" />
     <ClInclude Include="windows\BasicPongGame.h" />
     <ClInclude Include="windows\diffSelectWindow.h" />
     <ClInclude Include="windows\gameOverWindow.h" />
