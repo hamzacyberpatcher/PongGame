@@ -159,6 +159,7 @@
     <Image Include="sprites\background.png" />
     <Image Include="sprites\bluethrow.png" />
     <Image Include="sprites\bluewin.png" />
+    <Image Include="sprites\court.png" />
     <Image Include="sprites\cpu.png" />
     <Image Include="sprites\easy.png" />
     <Image Include="sprites\hard.png" />

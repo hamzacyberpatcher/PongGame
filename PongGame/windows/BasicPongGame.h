@@ -133,6 +133,14 @@ public:
     virtual void render(sf::RenderWindow& window) {
         window.setFramerateLimit(0);
 
+        sf::Texture bgTexture;
+        bgTexture.loadFromFile("./sprites/court.png");
+
+        sf::Sprite bgSprite;
+        bgSprite.setTexture(bgTexture);
+        bgSprite.setPosition(sf::Vector2f(0, 0));
+        window.draw(bgSprite);
+
         if (gameStartPause || gamePause)
         {
             sf::Text text;
@@ -147,13 +155,13 @@ public:
         sf::RectangleShape paddle1;
         paddle1.setSize(sf::Vector2f(m_p1.getRect().width, m_p1.getRect().height));
         paddle1.setPosition(m_p1.getRect().x, m_p1.getRect().y);
-        paddle1.setFillColor(sf::Color::White);
+        paddle1.setFillColor(sf::Color(222,36,36));
         window.draw(paddle1);
 
         sf::RectangleShape paddle2;
         paddle2.setSize(sf::Vector2f(m_p2.getRect().width, m_p2.getRect().height));
         paddle2.setPosition(m_p2.getRect().x, m_p2.getRect().y);
-        paddle2.setFillColor(sf::Color::White);
+        paddle2.setFillColor(sf::Color(46,46,176));
         window.draw(paddle2);
 
 
